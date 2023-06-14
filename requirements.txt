@@ -25,6 +25,9 @@ mlflow
 # --------- deployment ------ #
 fastapi
 
+# -------- exp tracking ----- #
+dvc
+
 # --------- others --------- #
 pyrootutils     # standardizing the project root setup
 pre-commit      # hooks for applying linters on commit
