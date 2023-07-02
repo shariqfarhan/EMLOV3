@@ -16,6 +16,7 @@ docker run -p 8000:8000 -v /logs:/app/logs vit-cifar10
 ```
 
 
-Access the Logger UI:
-Open a web browser and go to http://localhost:8000 (assuming the container is running on the local machine). The Logger UI provides real-time monitoring of the training progress and allows you to view the logs.
+## Access the Logger UI
+The Logger UI provides real-time monitoring of the training progress and allows us to view the logs in a browser. The port used for training is 8000.
+
 
