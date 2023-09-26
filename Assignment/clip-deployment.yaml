@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: clip-classifer-deployment
+    labels:
+        app: clip-classifier
+spec:
+    replicas: 2
+    selector:
+        matchLabels:
+            app: clip-classifier
+    template:
+        metadata:
+            labels:
+                app: clip-classifier
+        spec:
+            containers:
+                - name: clip-classifier
+                  image: clip-k8s:latest
+                  imagePullPolicy: Never
+                  ports:
+                      - containerPort: 7860

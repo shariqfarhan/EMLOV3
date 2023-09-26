@@ -1,0 +1,20 @@
+from PIL import Image
+import requests
+import torch
+
+from transformers import CLIPProcessor, CLIPModel
+
+model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
+processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+
+url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+image = Image.open(requests.get(url, stream=True).raw)
+input_text = ["a photo of a cat", "a photo of a dog"]
+
+inputs = processor(text=input_text, images=image, return_tensors="pt", padding=True)
+
+outputs = model(**inputs)
+logits_per_image = outputs.logits_per_image # this is the image-text similarity score
+probs = torch.nn.functional.softmax(logits_per_image[0], dim=0) # we can take the softmax to get the label probabilities
+confidences = {input_text[i]: float(probs[i]) for i in range(len(input_text))}
+print(confidences)
