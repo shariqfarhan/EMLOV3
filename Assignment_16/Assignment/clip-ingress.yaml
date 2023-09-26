@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: clip-classifier-ingress
+spec:
+    rules:
+        - host: clip-classifier.localhost
+          http:
+              paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: clip-classifier-service
+                            port:
+                                number: 80

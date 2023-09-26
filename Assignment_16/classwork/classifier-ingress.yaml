@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: classifier-ingress
+spec:
+    rules:
+        - host: classifier.localhost
+          http:
+              paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: classifier-service
+                            port:
+                                number: 80
