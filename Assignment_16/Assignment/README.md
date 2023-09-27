@@ -146,6 +146,4 @@ minikube   1005m        25%    3466Mi          44%
 
 6. kubectl get all -A -o yaml
 
-```
-
-```
+[Get all Details](https://github.com/shariqfarhan/EMLOV3/blob/Main/Assignment_16/Assignment/backup.yaml)
