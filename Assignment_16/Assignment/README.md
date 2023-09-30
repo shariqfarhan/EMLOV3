@@ -1,8 +1,14 @@
-Install minikube on local system using the below command
+# Deploying CLIP on Kubernetes
 
+This file talks about the steps to deploy the clip-classifier on kubernetes. We will be using minikube for this deployment.
+
+## Installation
+
+Install minikube on local system using the below command (For Mac)
 ```
 brew install minikube
 ```
+For Windows, you can follow the steps mentioned [here](https://minikube.sigs.k8s.io/docs/tutorials/wsl_docker_driver/Links to an external site.)
 
 If you have docker on local system then you can use Kubernetes using docker
 
@@ -10,6 +16,60 @@ If you have docker on local system then you can use Kubernetes using docker
 minikube start --driver=docker
 ```
 
+## Steps to deploy
+
+1. Create a docker image for clip-classifier using the Dockerfile provided in the repository. You can use the below command to create the docker image.
+
+```
+docker build --platform linux/amd64 -t clip-k8s .
+```
+The above command is specific for MacOS. For other OS, you can use the below command
+
+```
+docker build -t clip-k8s .
+```
+
+2. Create a deployment for clip-classifier using yaml files
+3. Similarly, create a service & ingress for clip-classifier using yaml files
+4. All these yaml files are provided in the repository
+  * Deployment: [clip-classifier-deployment.yaml](https://github.com/shariqfarhan/EMLOV3/blob/Main/Assignment_16/Assignment/clip-deployment.yaml)
+  * Service: [clip-classifier-service.yaml](https://github.com/shariqfarhan/EMLOV3/blob/Main/Assignment_16/Assignment/clip-service.yaml)
+  * Ingress: [clip-classifier-ingress.yaml](https://github.com/shariqfarhan/EMLOV3/blob/Main/Assignment_16/Assignment/clip-ingress.yaml)
+5. Once all the yaml files are created, navigate to the folder and deploy them using the below command
+```
+kubectl apply -f .
+```
+6. Once the deployment is done, you can check the status of the deployment using the below command
+```
+kubectl get all
+```
+7. You can also check the status of the deployment using the below command
+```
+kubectl describe <your_deployment>
+```
+8. You can also check the status of the pod using the below command
+```
+kubectl describe <your_pod>
+```
+### Tunnel to Ingress
+1. To access the service, we need to create a tunnel to the ingress. You can use the below command to create a tunnel
+```
+minikube tunnel
+```
+2. Once the tunnel is created, you can access the service using the below URL
+```
+http://clip-classifier.localhost/
+```
+
+### FastAPI docs access
+
+1. To access the FastAPI docs, you can use the below URL
+```
+http://clip-classifier.localhost/docs
+```
+
+
+## Assignment Details
 1.kubectl describe <your_deployment>
 
 ```
@@ -141,7 +201,7 @@ clip-classifer-deployment-5cc8894f98-n8cks   336m         542Mi
 
 ```
 NAME       CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%
-minikube   1005m        25%    3466Mi          44%  
+minikube   1005m        25%    3466Mi          44%
 ```
 
 6. kubectl get all -A -o yaml
