@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-server
+  labels:
+    app: web-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-server
+  template:
+    metadata:
+      labels:
+        app: web-server
+    spec:
+      containers:
+      - name: web-server
+        image: web-server:latest
+        imagePullPolicy: Never
+        resources:
+          limits:
+            memory: "200Mi"
+            cpu: "500m"
+        ports:
+          - containerPort: 80
+        env:
+          - name: REDIS_HOST
+            value: redis-db-service
+          - name: REDIS_PORT
+            value: "6379"
+          - name: REDIS_PASSWORD
+            value: aiwilltakeovertheworld
+          - name: MODEL_SERVER_URL
+            value: "http://model-server-service:9000"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-server-service
+spec:
+  selector:
+    app: web-server
+  ports:
+  - port: 8000
+    targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-server-ingress
+spec:
+  rules:
+    - host: fastapi.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name:  web-server-service
+                port:
+                  number: 8000
