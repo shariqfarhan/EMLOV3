@@ -1,12 +1,24 @@
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: clip-classifier-service
+# spec:
+#   selector:
+#     app: clip-classifier
+#   type: LoadBalancer
+#   ports:
+#     - protocol: TCP
+#       port: 9376
+#       targetPort: 80
+
 apiVersion: v1
 kind: Service
 metadata:
-  name: clip-classifier-service
+    name: clip-classifier-service
 spec:
-  selector:
-    app: clip-classifier
-  type: LoadBalancer
-  ports:
-    - protocol: TCP
-      port: 9376
-      targetPort: 80
+    selector:
+        app: clip-classifier
+    ports:
+        - protocol: TCP
+          port: 80
+          targetPort: 7860
