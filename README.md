@@ -1,4 +1,4 @@
-# CIFAR10 Training & Evalution using Copper
+# CIFAR10 Training & Evaluation using Copper
 
 Follow below steps for this
 
