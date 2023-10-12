@@ -15,7 +15,9 @@ setup(
     entry_points={
         "console_scripts": [
             "copper_train = copper.train:main",
+            "copper_cifar10_train = copper.cifar10_train:main",
             "copper_eval = copper.eval:main",
+            "copper_cifar10_eval = copper.cifar10_eval:main",
         ]
     },
 )

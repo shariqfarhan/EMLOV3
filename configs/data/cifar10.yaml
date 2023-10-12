@@ -1,0 +1,6 @@
+_target_: copper.data.cifar10_datamodule.CIFAR10DataModule
+data_dir: ${paths.data_dir}
+batch_size: 64
+train_val_test_split: [50_000, 5_000, 5_000]
+num_workers: 0
+pin_memory: False
