@@ -1,4 +1,4 @@
-# https://hydra.cc/docs/configure_hydra/intro/
+# <https://hydra.cc/docs/configure_hydra/intro/>
 
 # enable color logging
 defaults:
@@ -6,7 +6,7 @@ defaults:
   - override job_logging: colorlog
 
 # output directory, generated dynamically on each run
-# refer https://hydra.cc/docs/configure_hydra/workdir/
+# refer <https://hydra.cc/docs/configure_hydra/workdir/>
 run:
   dir: ${paths.log_dir}/${task_name}/runs/${now:%Y-%m-%d}_${now:%H-%M-%S}
 sweep:

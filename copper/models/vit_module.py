@@ -11,7 +11,6 @@ from torch.nn import functional as F
 from torchmetrics import MaxMetric, MeanMetric
 from torchmetrics.classification.accuracy import Accuracy
 
-
 class PatchEmbedding(nn.Module):
     def __init__(
         self,
@@ -56,7 +55,6 @@ class PatchEmbedding(nn.Module):
         x += self.positional_emb
 
         return x
-
 
 class MultiHeadAttention(nn.Module):
     def __init__(self, emb_size=768, num_heads=8, dropout=0):
@@ -105,7 +103,6 @@ class MultiHeadAttention(nn.Module):
 
         return out
 
-
 class ResidualAdd(nn.Module):
     def __init__(self, fn):
         super(ResidualAdd, self).__init__()
@@ -121,14 +118,12 @@ class ResidualAdd(nn.Module):
 
         return out
 
-
 FeedForwardBlock = lambda emb_size=768, expansion=4, drop_p=0.0: nn.Sequential(
     nn.Linear(emb_size, expansion * emb_size),
     nn.GELU(),
     nn.Dropout(drop_p),
     nn.Linear(expansion * emb_size, emb_size),
 )
-
 
 class TransformerEncoderBlock(nn.Sequential):
     def __init__(
@@ -153,13 +148,11 @@ class TransformerEncoderBlock(nn.Sequential):
             ),
         )
 
-
 class TransformerEncoder(nn.Sequential):
     def __init__(self, depth=12, **kwargs):
         super(TransformerEncoder, self).__init__(
             *(TransformerEncoderBlock(**kwargs) for _ in range(depth))
         )
-
 
 class ClassificationHead(nn.Sequential):
     def __init__(self, emb_size=768, num_classes=1000):
@@ -170,7 +163,6 @@ class ClassificationHead(nn.Sequential):
             nn.LayerNorm(emb_size),
             nn.Linear(emb_size, num_classes),
         )
-
 
 class ViT(nn.Sequential):
     def __init__(
@@ -194,25 +186,29 @@ class ViT(nn.Sequential):
             ClassificationHead(emb_size, num_classes),
         )
 
-
 class VitLitModule(LightningModule):
     def __init__(
         self,
         optimizer: torch.optim.Optimizer,
         scheduler: torch.optim.lr_scheduler,
         num_classes=10,
+        in_channels=3,
+        patch_size=4,
+        emb_size=64,
+        img_size=32,
+        depth=6
     ):
         super().__init__()
 
         self.save_hyperparameters(logger=False, ignore=["model"])
 
         self.model = ViT(
-            in_channels=3,
-            patch_size=4,
-            emb_size=64,
-            img_size=32,
-            depth=6,
-            num_classes=num_classes,
+            in_channels=self.hparams.in_channels,
+            patch_size=self.hparams.patch_size,
+            emb_size=self.hparams.emb_size,
+            img_size=self.hparams.img_size,
+            depth=self.hparams.depth,
+            num_classes=self.hparams.num_classes,
         )
 
         # loss function
@@ -301,7 +297,7 @@ class VitLitModule(LightningModule):
         Normally you'd need one. But in the case of GANs or similar you might have multiple.
 
         Examples:
-            https://lightning.ai/docs/pytorch/latest/common/lightning_module.html#configure-optimizers
+            <https://lightning.ai/docs/pytorch/latest/common/lightning_module.html#configure-optimizers>
         """
         optimizer = self.hparams.optimizer(params=self.parameters())
         if self.hparams.scheduler is not None:
