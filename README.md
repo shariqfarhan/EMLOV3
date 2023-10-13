@@ -70,8 +70,11 @@ Once remotes are set up, you can use the following commands to push and pull dat
    ```
 ## Hyperparameter configuration
 
+To make all the hyperparams of the model configuration through Hydra Config. We need to update the parameters in 2 places.
+1. Config File - [vit.yaml](https://github.com/shariqfarhan/EMLOV3/blob/assignment_5/configs/model/vit.yaml)
+2. Model Code - [vit_module.py](https://github.com/shariqfarhan/EMLOV3/blob/assignment_5/copper/models/vit_module.py)
 
-
+Once done, we can pass the parameters in the experiment or the original config file for ViT training.
 
 # Lightning Template
 
