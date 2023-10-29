@@ -1,0 +1,42 @@
+# version: '3'
+
+# services:
+#   training:
+#     # container_name: vit-cifar10-patch
+#     build:
+#       context: .
+#     volumes:
+#       - /workspace/lightning-template/logs/:/app/logs  # Mount your logs directory
+#     environment:
+#       - LOGGER_PORT=5000  # Specify the port for your Logger UI Server
+#     command: ["copper_train -m hydra/launcher=joblib hydra.launcher.n_jobs=1 experiment=vit model.patch_size=1 trainer.max_epochs=1"]
+
+#   logger:
+#     image: ghcr.io/mlflow/mlflow:v2.0.1 # Official MLflow Docker Image from https://mlflow.org/docs/latest/docker.html
+#     ports:
+#       - "5000:5000"  # Expose the Logger UI Server port
+#     volumes:
+#       - /workspace/lightning-template/logs/:/app/logs  # Mount the logs directory for the logger
+#     command: ["sh", "-c", "cd /app/logs/mlflow && mlflow server --host 0.0.0.0"]
+
+version: '3'
+
+services:
+  training:
+    build:
+      context: .  # Replace with the actual path to your app
+    environment:
+      - LOGGER_PORT=5000  # Specify the port for your Logger UI Server  
+    command: ["copper_train", "-m", "hydra/launcher=joblib", "hydra.launcher.n_jobs=1", "experiment=vit", "model.patch_size=16", "trainer.max_epochs=1", "data.num_workers=0"]
+    volumes:
+      - /workspace/lightning-template/logs/:/app/logs  # Mount your app code into the container
+    depends_on:
+      - mlflow
+
+  mlflow:
+    image: ubuntu/mlflow:2.1.1_1.0-22.04
+    ports:
+      - "5000:5000"  # Expose MLflow UI on port 5000
+    volumes:
+      - /workspace/lightning-template/logs/:/app/logs  # Mount MLflow data directory
+    command: ["mlflow", "ui", "--backend-store-uri", "/logs/mlflow/mlruns", "--host", "0.0.0.0"]

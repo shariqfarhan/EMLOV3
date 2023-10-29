@@ -1,12 +1,5 @@
 _target_: copper.models.cifar10_module.CIFAR10LitModule
 
-num_classes: 10
-in_channels: 3
-patch_size: 4
-emb_size: 64
-img_size: 32
-depth: 6
-
 optimizer:
   _target_: torch.optim.Adam
   _partial_: true
@@ -22,8 +15,11 @@ scheduler:
 
 net:
   _target_: copper.models.components.cifar10_dense_net.CIFAR10DenseNet
-  input_size: 784
-  lin1_size: 64
-  lin2_size: 128
-  lin3_size: 64
-  output_size: 10
+  num_classes: 10
+  in_channels: 3
+  patch_size: 4
+  emb_size: 64
+  img_size: 32
+  depth: 6
+
+  

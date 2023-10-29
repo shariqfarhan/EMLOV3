@@ -33,10 +33,12 @@ RUN pip install --no-dependencies -e . \
     && pip install torch==1.10.0+cpu torchvision==0.11.0+cpu -f https://download.pytorch.org/whl/torch_stable.html \
     && pip install lightning[extra]>=2.0.0 mlflow \
     && pip install -r requirements.txt \
+    && pip install hydra-joblib-launcher --upgrade \
+    && pip install --upgrade torch torchvision \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Expose port for MLflow UI (e.g., port 5000)
 EXPOSE 5000
 
 # Set the entry point for your script
-CMD ["copper_train", "-m hydra/launcher=joblib hydra.launcher.n_jobs=1 experiment=vit model.patch_size=1,2,4,8,16 trainer.max_epochs=5 data.num_workers=0"]
+CMD ["copper_train", " -m hydra/launcher=joblib hydra.launcher.n_jobs=1 experiment=vit model.net.patch_size=1,2,4,8,16 trainer.max_epochs=1 data.num_workers=0"]

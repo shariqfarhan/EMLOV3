@@ -13,10 +13,10 @@ defaults:
 # all parameters below will be merged with parameters from default configurations set above
 # this allows you to overwrite only specified parameters
 
-experiment_name: "vit-cifar10-patch-size-check"
+experiment_name: "vit-cifar10-patch-size-in-docker"
 
 tags:
-  vit: "cifar10-patch_size_exp"
+  vit: "cifar10-patch_size_docker"
 
 seed: 12345
 
