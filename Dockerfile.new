@@ -8,7 +8,9 @@ COPY .  .
 # Install custom library copper & to make it editable we use -e .
 
 RUN pip install --no-cache-dir -r requirements.txt && \ 
-    pip install --no-cache-dir -e . 
+    pip install --no-cache-dir -e . && \
+    pip install --no-cache-dir --no-dependencies torch==1.10.0+cpu torchvision==0.11.0+cpu -f https://download.pytorch.org/whl/torch_stable.html && \
+    pip install --no-cache-dir --no-dependencies numpy typing-extensions pillow
 
 # Expose port for MLFLOW UI
 EXPOSE 5000
