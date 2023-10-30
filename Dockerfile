@@ -1,44 +1,24 @@
-# FROM python:3.7.10-slim-buster
+# Base Image - python 3.9
+FROM python:3.9-slim-buster
 
-# RUN export DEBIAN_FRONTEND=noninteractive \
-#     && echo "LC_ALL=en_US.UTF-8" >> /etc/environment \
-#     && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
-#     && echo "LANG=en_US.UTF-8" > /etc/locale.conf \
-#     && apt update && apt install -y locales \
-#     && locale-gen en_US.UTF-8 \
-#     && rm -rf /var/lib/apt/lists/*
+WORKDIR /workspace
+COPY .  .
 
-# RUN pip install \
-#     torch==1.9.0+cpu \
-#     torchvision==0.10.0+cpu \
-#     torchaudio==0.9.0 \
-#     -f https://download.pytorch.org/whl/torch_stable.html \
-#     && rm -rf /root/.cache/pip
+# Install all requirements from requirements.txt
+# Install custom library copper & to make it editable we use -e .
 
-# ENV LANG=en_US.UTF-8 \
-#     LANGUAGE=en_US:en \
-#     LC_ALL=en_US.UTF-8
+# torch==1.10.0+cpu
 
-# Build Stage
-FROM python:3.8-slim as build
+RUN pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir -e . && \
+    pip install --no-cache-dir --no-dependencies torchvision==0.11.0+cpu -f https://download.pytorch.org/whl/torch_stable.html && \
+    pip install --no-cache-dir --no-dependencies numpy typing-extensions pillow && \
+    pip install hydra-joblib-launcher --upgrade && \
+    pip install --upgrade torch torchvision
 
-WORKDIR /app
-
-# Copy your Python code and requirements file
-COPY . /app
-COPY requirements.txt /app
-
-# Install your Python dependencies from requirements.txt
-RUN pip install --no-dependencies -e . \
-    && pip install torch==1.10.0+cpu torchvision==0.11.0+cpu -f https://download.pytorch.org/whl/torch_stable.html \
-    && pip install lightning[extra]>=2.0.0 mlflow \
-    && pip install -r requirements.txt \
-    && pip install hydra-joblib-launcher --upgrade \
-    && pip install --upgrade torch torchvision \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Expose port for MLflow UI (e.g., port 5000)
+# Expose port for MLFLOW UI
 EXPOSE 5000
 
+# Run Copper command
 # Set the entry point for your script
-CMD ["copper_train", " -m hydra/launcher=joblib hydra.launcher.n_jobs=1 experiment=vit model.net.patch_size=1,2,4,8,16 trainer.max_epochs=1 data.num_workers=0"]
+CMD ["copper_train", " -m hydra/launcher=joblib hydra.launcher.n_jobs=3 experiment=vit model.net.patch_size=1,2,4 trainer.max_epochs=1 data.num_workers=0"]
