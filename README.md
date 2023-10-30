@@ -29,6 +29,11 @@ Here's a step-by-step breakdown of the process:
    - `pip install -e .`: This command installs the necessary Copper library inside the container.
    - `copper_train -m hydra/launcher=joblib hydra.launcher.n_jobs=3 experiment=vit model.net.patch_size=1,2,4 trainer.max_epochs=1 data.num_workers=0`: We execute this command to initiate training for three different patch sizes (1, 2, and 4) for a single epoch.
 
+   The dockerfile can be accessed from dockerhub with this command 
+   ```
+   docker pull shariqfarhan/vit_train:latest
+   ```
+
 5. **MLflow for Experiment Tracking**: Simultaneously, we set up a dedicated Docker container for the MLflow user interface. We've utilized the `ubuntu/mlflow:2.1.1_1.0-22.04` image from Docker Hub to achieve this.
 
    **Docker Image Pull Command**:
