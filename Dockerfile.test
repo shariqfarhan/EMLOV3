@@ -1,0 +1,9 @@
+# Pytorch lightning base
+FROM pytorchlightning/pytorch_lightning:base-cuda-py3.9-torch1.12-cuda11.7.1
+
+WORKDIR /workspace
+COPY . .
+
+RUN pip install -r requirements.txt && \
+    pip install -e . && \
+    

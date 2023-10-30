@@ -2,3 +2,5 @@ logs/
 data/
 mlruns/
 outputs/
+checkpoint/
+*.dvc
