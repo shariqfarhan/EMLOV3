@@ -1,0 +1,31 @@
+_target_: copper.models.gpt_lit_module.GPTLitModule
+# vocab_size_lit: 100277
+# block_size: 8
+# n_embed: 64
+# n_heads: 4
+# n_decoder_blocks: 4
+# drop_p: 0
+
+# optimizer:
+#   _target_: torch.optim.Adam
+#   _partial_: true
+#   lr: 0.001
+#   weight_decay: 0.0
+
+# scheduler:
+#   _target_: torch.optim.lr_scheduler.ReduceLROnPlateau
+#   _partial_: true
+#   mode: min
+#   factor: 0.1
+#   patience: 10
+
+GPT:
+  _target_: copper.models.components.gpt.GPT
+  # vocab_size_gpt: 100277
+  block_size: 8
+  n_embed: 64
+  n_heads: 4
+  n_blocks: 4
+  drop_p: 0
+
+  

@@ -11,6 +11,8 @@ defaults:
   - logger: null
   - callbacks: default.yaml
   - hydra: default.yaml
+  # config for hyperparameter optimization
+  - hparams_search: null
 
   # experiment configs allow for version control of specific hyperparameters
   # e.g. best hyperparameters for given model and datamodule

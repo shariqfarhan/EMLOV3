@@ -1,0 +1,7 @@
+_target_: copper.data.harry_potter_datamodule.ShakespeareDataModule
+data_dir: ${paths.data_dir}
+batch_size: 64
+# train_val_test_split: [50_000, 5_000, 5_000]
+num_workers: 0
+pin_memory: False
+block_size: 8

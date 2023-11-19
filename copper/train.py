@@ -1,6 +1,7 @@
 from typing import Tuple, Dict
 import mlflow
 import os
+import math
 import lightning as L
 import torch
 import hydra
@@ -22,6 +23,16 @@ def train(cfg: DictConfig) -> Tuple[dict, dict]:
 
     log.info(f"Instantiating model <{cfg.model._target_}>")
     model: L.LightningModule = hydra.utils.instantiate(cfg.model)
+
+    # Check if conditions are met to skip training
+    if (
+        model.get_parameters().get('block_size') % model.get_parameters().get('n_blocks') != 0
+        or model.get_parameters().get('block_size') > model.get_parameters().get('n_embed')
+        or model.get_parameters().get('n_embed') % model.get_parameters().get('n_heads') != 0
+        or model.count_parameters() > 60000000
+    ):
+        log.info("Skipping training due to specified conditions.")
+        return {}, {}
 
     log.info("Instantiating loggers...")
     logger: List[Logger] = utils.instantiate_loggers(cfg.get("logger"))
@@ -91,9 +102,11 @@ def main(cfg: DictConfig):
 
     # this will be used by hydra later for optimization
     # safely retrieve metric value for hydra-based hyperparameter optimization
-    metric_value = utils.get_metric_value(
-        metric_dict=metric_dict, metric_name=cfg.get("optimized_metric")
-    )
+    try:
+        metric_value = utils.get_metric_value(
+        metric_dict=metric_dict, metric_name=cfg.get("optimized_metric"))
+    except:
+        return math.inf
 
     # return optimized metric
     return metric_value
