@@ -107,3 +107,4 @@ This process creates a new branch in the specified remote repository, enabling y
 ```
 git push --set-upstream origin assignment_7
 ```
+copper_train -m hparams_search=gpt_hp experiment=gpt logger=many_loggers
