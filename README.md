@@ -100,3 +100,10 @@ If you're creating a replica of a GitHub repository and encounter authentication
 This process creates a new branch in the specified remote repository, enabling you to seamlessly manage and expand upon your work.
 
 ---
+
+
+<img width="612" alt="image" src="https://github.com/shariqfarhan/EMLOV3/assets/57046534/8a221ef2-73d3-4f93-a5b8-f45ea3f18535">
+
+```
+git push --set-upstream origin assignment_7
+```
